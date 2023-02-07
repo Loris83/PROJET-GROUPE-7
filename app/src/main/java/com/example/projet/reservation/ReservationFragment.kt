@@ -20,17 +20,9 @@ class ReservationFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentReservationBinding.inflate(layoutInflater)
-        //getUser("michelG83","azerty1234")
+        getUser("michelG83","azerty1234")
         getReservation()
-        /*var data = listOf(ReservationDataModel("15h00","17h00","Lundi 6 février","2", "1"),
-            ReservationDataModel("10h00","11h00","Mardi 7 févrirer","1", "2"))*/
         val data = listOf(ReservationDataModel("10h00","11h00","Lundi 6 février","2", "1"))
-        /*DatabaseHelper.database.child("reservation").orderByChild("reservation")
-            .get().addOnSuccessListener {
-            Log.i("firebase", "Got value ${it.value}")
-        }.addOnFailureListener{
-            Log.e("firebase", "Error getting data", it)
-        }*/
 
         manager = LinearLayoutManager(binding.root.context)
         binding.recyclerView.apply {
@@ -67,9 +59,6 @@ class ReservationFragment : Fragment() {
                              it.getValue(ReservationDataModel::class.java)
                          }
                         Log.d("dataBase", "" + resa)
-                    }
-                    else {
-                        Log.d("dataBase", "snapshot n'existe po")
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {
