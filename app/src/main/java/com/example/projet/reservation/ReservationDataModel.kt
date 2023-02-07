@@ -1,7 +1,14 @@
 package com.example.projet.reservation
 
-data class ReservationDataModel(val id: Int,
-                                val msg: String,
-                                val opening: String,
-                                val ending: String,
-                                val field: String)
+import com.google.firebase.database.IgnoreExtraProperties
+
+@IgnoreExtraProperties
+data class ReservationDataModel(
+        val opening: String? = null,
+        val ending: String? = null,
+        val date: String? = null,
+        val field_id: String? = null,
+        val user_id: String? = null
+){
+
+}
