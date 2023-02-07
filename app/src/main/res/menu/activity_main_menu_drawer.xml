@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" >
+    <!--
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/activity_main_drawer_news"
+            android:title="Fil d'actualité" />
+    </group>
+
+    <item android:title="Reservation">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/activity_main_drawer_profile"
+                    android:title="Profil" />
+                <item
+                    android:id="@+id/activity_main_drawer_settings"
+                    android:title="Paramètres" />
+            </group>
+        </menu>
+    </item>-->
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:title="@string/home_nav_title" />
+
+        <item
+            android:id="@+id/nav_reservation"
+            android:title="@string/res_nav_title" />
+    </group>
+</menu>
