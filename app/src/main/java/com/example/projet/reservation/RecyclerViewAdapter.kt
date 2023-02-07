@@ -5,12 +5,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projet.databinding.ReservationRecyclerViewItemBinding
 
-class RecyclerViewAdapter(private val data : List<DataModel>)
+class RecyclerViewAdapter(private val data : List<ReservationDataModel>)
     : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>(){
 
     class ViewHolder(private val binding : ReservationRecyclerViewItemBinding)
         : RecyclerView.ViewHolder(binding.root) {
-            fun bind(item: DataModel){
+            fun bind(item: ReservationDataModel){
                 binding.listItem = item
             }
         }

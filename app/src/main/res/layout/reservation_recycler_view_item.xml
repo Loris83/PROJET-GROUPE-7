@@ -4,10 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="com.example.projet.reservation.DataModel"/>
+        <import type="com.example.projet.reservation.ReservationDataModel"/>
         <variable
             name="listItem"
-            type="DataModel" />
+            type="ReservationDataModel" />
 
     </data>
 
