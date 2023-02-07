@@ -66,11 +66,11 @@ class ReservationFragment : Fragment() {
                          val resa = snapshot.children.map {
                              it.getValue(ReservationDataModel::class.java)
                          }
-                        Log.d("fireBase", "" + resa)
+                        Log.d("dataBase", "" + resa)
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {
-                    Log.e("fireBase", error.toString())
+                    Log.e("dataBase", error.toString())
                 }
             })
     }
