@@ -28,5 +28,9 @@
         <item
             android:id="@+id/nav_reservation"
             android:title="@string/res_nav_title" />
+
+        <item
+            android:id="@+id/nav_list_users"
+            android:title="@string/list_users_nav_title" />
     </group>
 </menu>

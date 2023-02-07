@@ -7,4 +7,5 @@
 
     <string name="res_nav_title">Mes Reservations</string>
     <string name="home_nav_title">Accueil</string>
+    <string name="list_users_nav_title">Liste Utilisateurs</string>
 </resources>

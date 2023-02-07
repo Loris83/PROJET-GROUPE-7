@@ -17,5 +17,10 @@
         android:label="@string/res_nav_title"
         tools:layout="@layout/fragment_reservation" />
 
+    <fragment
+        android:id="@+id/nav_list_users"
+        android:name="com.example.projet.userlist.UserListFragment"
+        android:label="@string/list_users_nav_title"
+        tools:layout="@layout/fragment_user_list" />
 
 </navigation>
