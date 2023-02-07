@@ -23,4 +23,10 @@
         android:label="@string/list_users_nav_title"
         tools:layout="@layout/fragment_user_list" />
 
+    <fragment
+        android:id="@+id/nav_login"
+        android:name="com.example.projet.login.LoginFragment"
+        android:label="@string/login_nav_title"
+        tools:layout="@layout/fragment_login" />
+
 </navigation>

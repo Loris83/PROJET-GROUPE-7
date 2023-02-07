@@ -8,4 +8,17 @@
     <string name="res_nav_title">Mes Reservations</string>
     <string name="home_nav_title">Accueil</string>
     <string name="list_users_nav_title">Liste Utilisateurs</string>
+
+    <string name="login_failed">"Login failed"</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="login_nav_title">Login</string>
+    <string name="login_successful">Login successful!</string>
+    <string name="login_no_successful">Invalid username or password</string>
+    <string name="login_empty">Username or password empty</string>
+    <string name="login_to_short">Username or password to short</string>
+    <string name="login_no_in_format">Username not good format</string>
 </resources>
