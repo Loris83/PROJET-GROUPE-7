@@ -8,13 +8,13 @@
     <fragment
         android:id="@+id/nav_home"
         android:name="com.example.projet.Home.HomeFragment"
-        android:label="Home"
+        android:label="@string/home_nav_title"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_reservation"
-        android:name="com.example.projet.Reservation.ReservationFragment"
-        android:label="@string/menu_reservation"
+        android:name="com.example.projet.reservation.ReservationFragment"
+        android:label="@string/res_nav_title"
         tools:layout="@layout/fragment_reservation" />
 
 
