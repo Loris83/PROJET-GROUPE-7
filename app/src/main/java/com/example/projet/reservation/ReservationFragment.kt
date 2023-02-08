@@ -21,8 +21,8 @@ class ReservationFragment : Fragment() {
         super.onCreate(savedInstanceState)
         binding = FragmentReservationBinding.inflate(layoutInflater)
         getUser("michelG83","azerty1234")
-        getReservation()
-        val data = listOf(ReservationDataModel("10h00","11h00","Lundi 6 février","2", "1"))
+        val data = getReservation()
+        //val data = listOf(ReservationDataModel("10h00","11h00","Lundi 6 février","2", "1"))
 
         manager = LinearLayoutManager(binding.root.context)
         binding.recyclerView.apply {
@@ -40,35 +40,26 @@ class ReservationFragment : Fragment() {
         //return inflater.inflate(R.layout.fragment_reservation, container, false)
     }
 
-    fun getReservation() /*: List<ReservationDataModel>*/{
-        lateinit var resa: List<ReservationDataModel>
+    fun getReservation() : List<ReservationDataModel>{
+        var resa : List<ReservationDataModel> = listOf()
         DatabaseHelper.database.getReference("reservation")
             .orderByChild("date")
             .addListenerForSingleValueEvent(object : ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if(snapshot.exists()){
-                        //var position = 0
-                        /*
-                        while(snapshot.children.elementAt(position).exists()) {
-                            val reservation =
-                                snapshot.children.elementAt(position).getValue(ReservationDataModel::class.java)
-                            Log.d("fireBase", "" + reservation.toString())
-                            position+=1
-                        }
-                        */
                          val reservation = snapshot.children.map {
                              it.getValue(ReservationDataModel::class.java)
                          }
-                        resa= reservation as List<ReservationDataModel>
-                        Log.d("dataBase", "" + resa[1])
-
+                        resa = reservation as List<ReservationDataModel>
+                        Log.d("dataBase", "reservation data if : " + resa)
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {
                     Log.e("dataBase", error.toString())
                 }
             })
-        //return resa
+        Log.d("dataBase", "reservation data oof : " + resa)
+        return resa
     }
 
     fun getUser(username: String, password: String) {
