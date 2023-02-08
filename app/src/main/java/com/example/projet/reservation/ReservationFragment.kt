@@ -40,7 +40,8 @@ class ReservationFragment : Fragment() {
         //return inflater.inflate(R.layout.fragment_reservation, container, false)
     }
 
-    fun getReservation(){
+    fun getReservation() /*: List<ReservationDataModel>*/{
+        lateinit var resa: List<ReservationDataModel>
         DatabaseHelper.database.getReference("reservation")
             .orderByChild("date")
             .addListenerForSingleValueEvent(object : ValueEventListener{
@@ -55,16 +56,19 @@ class ReservationFragment : Fragment() {
                             position+=1
                         }
                         */
-                         val resa = snapshot.children.map {
+                         val reservation = snapshot.children.map {
                              it.getValue(ReservationDataModel::class.java)
                          }
-                        Log.d("dataBase", "" + resa)
+                        resa= reservation as List<ReservationDataModel>
+                        Log.d("dataBase", "" + resa[1])
+
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {
                     Log.e("dataBase", error.toString())
                 }
             })
+        //return resa
     }
 
     fun getUser(username: String, password: String) {
