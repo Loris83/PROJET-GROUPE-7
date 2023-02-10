@@ -21,4 +21,22 @@
     <string name="login_empty">Username or password empty</string>
     <string name="login_to_short">Username or password to short</string>
     <string name="login_no_in_format">Username not good format</string>
+
+    <string name="text_button_7h_00">07:00</string>
+    <string name="text_button_8h_00">08:00</string>
+    <string name="text_button_9h_00">09:00</string>
+    <string name="text_button_10h_00">10:00</string>
+    <string name="text_button_11h_00">11:00</string>
+    <string name="text_button_12h_00">12:00</string>
+    <string name="text_button_13h_00">13:00</string>
+    <string name="text_button_14h_00">14:00</string>
+    <string name="text_button_15h_00">15:00</string>
+    <string name="text_button_16h_00">16:00</string>
+    <string name="text_button_17h_00">17:00</string>
+    <string name="text_button_18h_00">18:00</string>
+    <string name="text_button_19h_00">19:00</string>
+    <string name="text_button_20h_00">20:00</string>
+    <string name="text_button_21h_00">21:00</string>
+    <string name="text_button_booking">Réserver</string>
+
 </resources>
