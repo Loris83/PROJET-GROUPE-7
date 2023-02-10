@@ -22,10 +22,7 @@ class ReservationFragment : Fragment() {
         super.onCreate(savedInstanceState)
         binding = FragmentReservationBinding.inflate(layoutInflater)
         //getUser("michelG83","azerty1234")
-        //val data = listOf(ReservationDataModel("10h00","11h00","Lundi 6 février","2", "1"))
         getReservation()
-        Log.d("dataBase", "reservation data oncreate : " + data)
-        Log.d("dataBase", "reservation data oncreate2 : " + data)
 
     }
 
@@ -38,7 +35,7 @@ class ReservationFragment : Fragment() {
     }
 
      fun getReservation()  {
-            val c = DatabaseHelper.database.getReference("reservation")
+            DatabaseHelper.database.getReference("reservation")
                 .orderByChild("date")
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
