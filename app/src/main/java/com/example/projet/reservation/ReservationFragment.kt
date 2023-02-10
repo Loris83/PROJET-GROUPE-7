@@ -2,34 +2,44 @@ package com.example.projet.reservation
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread
 import com.example.projet.DatabaseHelper
 import com.example.projet.databinding.FragmentReservationBinding
 import com.google.firebase.database.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import java.util.*
 
 
 class ReservationFragment : Fragment() {
     private lateinit var binding: FragmentReservationBinding
     private lateinit var manager: RecyclerView.LayoutManager
-    //lateinit var data: List<ReservationDataModel>
-    override fun onCreate(savedInstanceState: Bundle?) {
+    var data: List<ReservationDataModel> = listOf()
+    override fun onCreate(savedInstanceState: Bundle?): Unit = runBlocking {
         super.onCreate(savedInstanceState)
         binding = FragmentReservationBinding.inflate(layoutInflater)
-        getUser("michelG83","azerty1234")
-        val data = getReservation()
+        //getUser("michelG83","azerty1234")
         //val data = listOf(ReservationDataModel("10h00","11h00","Lundi 6 février","2", "1"))
-
-        manager = LinearLayoutManager(binding.root.context)
-        binding.recyclerView.apply {
-            adapter = RecyclerViewAdapter(data)
-            layoutManager = manager
+        UiThreadStatement.runOnUiThread(Runnable {
+            // UI Updates
+        })
+        GlobalScope.launch {
+            data = getReservation()
+            Log.d("dataBase", "reservation data oncreate : " + data)
+            manager = LinearLayoutManager(binding.root.context)
+            binding.recyclerView.apply {
+                adapter = RecyclerViewAdapter(data)
+                layoutManager = manager
+            }
         }
-
     }
 
     override fun onCreateView(
@@ -40,39 +50,44 @@ class ReservationFragment : Fragment() {
         //return inflater.inflate(R.layout.fragment_reservation, container, false)
     }
 
-    fun getReservation() : List<ReservationDataModel>{
+    suspend fun getReservation() : List<ReservationDataModel>{
         var resa : List<ReservationDataModel> = listOf()
-        DatabaseHelper.database.getReference("reservation")
-            .orderByChild("date")
-            .addListenerForSingleValueEvent(object : ValueEventListener{
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if(snapshot.exists()){
-                         val reservation = snapshot.children.map {
-                             it.getValue(ReservationDataModel::class.java)
-                         }
-                        resa = reservation as List<ReservationDataModel>
-                        Log.d("dataBase", "reservation data if : " + resa)
+            DatabaseHelper.database.getReference("reservation")
+                .orderByChild("date")
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            val reservation = snapshot.children.map {
+                                it.getValue(ReservationDataModel::class.java)
+                            }
+                            resa = reservation as List<ReservationDataModel>
+
+                            Log.d("dataBase", "reservation data if : " + resa)
+                        }
                     }
-                }
-                override fun onCancelled(error: DatabaseError) {
-                    Log.e("dataBase", error.toString())
-                }
-            })
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.e("dataBase", error.toString())
+                    }
+                })
+        delay(1000)
         Log.d("dataBase", "reservation data oof : " + resa)
         return resa
     }
 
     fun getUser(username: String, password: String) {
         DatabaseHelper.database.getReference("user")
+            .orderByChild("username")
+            .equalTo(username)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     Log.d("dataBase", snapshot.toString())
                     if(snapshot.exists()) {
                         val user = snapshot.children.elementAt(1).getValue(User::class.java)
-                        //if(user?.password == password) {
+                        if(user?.password == password) {
                         Log.d("dataBase",""+user.toString())
                             // Connected
-                        //}
+                        }
                     }
                 }
                 override fun onCancelled(error: DatabaseError) {
