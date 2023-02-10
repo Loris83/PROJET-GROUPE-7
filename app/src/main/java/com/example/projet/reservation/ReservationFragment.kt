@@ -8,15 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.test.internal.runner.junit4.statement.UiThreadStatement.runOnUiThread
 import com.example.projet.DatabaseHelper
 import com.example.projet.databinding.FragmentReservationBinding
 import com.google.firebase.database.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import java.util.*
 
 
 class ReservationFragment : Fragment() {
@@ -28,18 +23,10 @@ class ReservationFragment : Fragment() {
         binding = FragmentReservationBinding.inflate(layoutInflater)
         //getUser("michelG83","azerty1234")
         //val data = listOf(ReservationDataModel("10h00","11h00","Lundi 6 février","2", "1"))
-        UiThreadStatement.runOnUiThread(Runnable {
-            // UI Updates
-        })
-        GlobalScope.launch {
-            data = getReservation()
-            Log.d("dataBase", "reservation data oncreate : " + data)
-            manager = LinearLayoutManager(binding.root.context)
-            binding.recyclerView.apply {
-                adapter = RecyclerViewAdapter(data)
-                layoutManager = manager
-            }
-        }
+        getReservation()
+        Log.d("dataBase", "reservation data oncreate : " + data)
+        Log.d("dataBase", "reservation data oncreate2 : " + data)
+
     }
 
     override fun onCreateView(
@@ -50,9 +37,8 @@ class ReservationFragment : Fragment() {
         //return inflater.inflate(R.layout.fragment_reservation, container, false)
     }
 
-    suspend fun getReservation() : List<ReservationDataModel>{
-        var resa : List<ReservationDataModel> = listOf()
-            DatabaseHelper.database.getReference("reservation")
+     fun getReservation()  {
+            val c = DatabaseHelper.database.getReference("reservation")
                 .orderByChild("date")
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
@@ -60,9 +46,12 @@ class ReservationFragment : Fragment() {
                             val reservation = snapshot.children.map {
                                 it.getValue(ReservationDataModel::class.java)
                             }
-                            resa = reservation as List<ReservationDataModel>
-
-                            Log.d("dataBase", "reservation data if : " + resa)
+                            data = reservation as List<ReservationDataModel>
+                            manager = LinearLayoutManager(binding.root.context)
+                            binding.recyclerView.apply {
+                                adapter = RecyclerViewAdapter(data)
+                                layoutManager = manager
+                            }
                         }
                     }
 
@@ -70,9 +59,6 @@ class ReservationFragment : Fragment() {
                         Log.e("dataBase", error.toString())
                     }
                 })
-        delay(1000)
-        Log.d("dataBase", "reservation data oof : " + resa)
-        return resa
     }
 
     fun getUser(username: String, password: String) {
