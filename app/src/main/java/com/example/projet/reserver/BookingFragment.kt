@@ -34,7 +34,7 @@ class BookingFragment : Fragment() {
             Pair(binding.button21h00,21)
         ).forEach { horaire ->
             horaire.first.setOnClickListener {
-                
+
             }
         }
     }
