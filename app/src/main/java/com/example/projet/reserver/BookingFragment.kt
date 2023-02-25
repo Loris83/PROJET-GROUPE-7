@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
 import com.example.projet.R
 import com.example.projet.databinding.FragmentBookingBinding
@@ -37,6 +38,15 @@ class BookingFragment : Fragment() {
 
             }
         }
+
+        binding.spinnerCourt.apply {
+            adapter = SpinnerCourtAdapter(binding.root.context, listOf(
+                "terrain 1", "terrain 2"
+            ))
+        }
+
+
+
     }
 
     override fun onCreateView(
