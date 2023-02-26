@@ -25,8 +25,21 @@ class UserListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentUserListBinding.inflate(layoutInflater)
+        var manager = LinearLayoutManager(binding.root.context)
+
+        /*binding.recyclerView.apply {
+            adapter = UserListAdapter(UserModel.getVerifiedUsers(true))
+            layoutManager = manager
+        }
+
+        manager = LinearLayoutManager(binding.root.context)
+        binding.secondRecyclerView.apply {
+            adapter = UserListAdapter(UserModel.getVerifiedUsers(false))
+            layoutManager = manager
+        }*/
         getVerifiedUsers()
         getUnverifiedUsers()
+
     }
 
     override fun onCreateView(
@@ -37,41 +50,40 @@ class UserListFragment : Fragment() {
         return binding.root
         //return inflater.inflate(R.layout.fragment_user_list, container, false)
     }
-
     fun getVerifiedUsers() {
         var users: MutableList<UserDataModel> = mutableListOf<UserDataModel>()
-            DatabaseHelper.database.getReference("user")
-                .orderByChild("verified")
-                .equalTo(true)
-                .addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        if (snapshot.exists()) {
-                            var index = 0
-                            Log.d("children", "" + snapshot.childrenCount)
-                            while (index < snapshot.childrenCount) {
-                                var user = snapshot.children.elementAt(index)
-                                    .getValue(UserDataModel::class.java)
-                                Log.d("children", "user : " + user)
-                                if (user != null) {
-                                    users.add(user)
-                                    Log.d("children", "users : " + users[index])
-                                }
-                                index++
+        DatabaseHelper.database.getReference("user")
+            .orderByChild("verified")
+            .equalTo(true)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        var index = 0
+                        Log.d("children", "" + snapshot.childrenCount)
+                        while (index < snapshot.childrenCount) {
+                            var user = snapshot.children.elementAt(index)
+                                .getValue(UserDataModel::class.java)
+                            Log.d("children", "user : " + user)
+                            if (user != null) {
+                                users.add(user)
+                                Log.d("children", "users : " + users[index])
                             }
-                            binding.secondRecyclerView.apply {
-                                adapter = UserListAdapter(users)
-                                layoutManager = LinearLayoutManager(binding.root.context)
-                            }
+                            index++
                         }
-
+                        binding.secondRecyclerView.apply {
+                            adapter = UserListAdapter(users)
+                            layoutManager = LinearLayoutManager(binding.root.context)
+                        }
                     }
 
-                    override fun onCancelled(error: DatabaseError) {
-                        Log.e("dataBase", error.toString())
-                    }
+                }
 
-                })
-        }
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("dataBase", error.toString())
+                }
+
+            })
+    }
     fun getUnverifiedUsers() {
         var users: MutableList<UserDataModel> = mutableListOf<UserDataModel>()
         DatabaseHelper.database.getReference("user")
@@ -106,4 +118,7 @@ class UserListFragment : Fragment() {
 
             })
     }
+
+
+
 }

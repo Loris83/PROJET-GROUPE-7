@@ -7,12 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.example.projet.DatabaseHelper
+import com.example.projet.MainActivity
 import com.example.projet.R
 import com.example.projet.databinding.FragmentLoginBinding
-import com.example.projet.reservation.ReservationFragment
 import com.example.projet.user.UserDataModel
-import com.google.firebase.database.*
+import com.example.projet.user.UserSession
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import java.util.*
 
 
@@ -152,11 +156,6 @@ class LoginFragment : Fragment() {
         return isEmpty
     }
 
-    private fun dataBaseRequest (inputUserName: String, inputPassword: String){
-        //
-
-    }
-
     fun getUser(username: String, password: String) {
         DatabaseHelper.database.getReference("user")
             .orderByChild("username")
@@ -169,8 +168,10 @@ class LoginFragment : Fragment() {
                         if(user?.password == password) {
                             Log.d("dataBase","connected")
                             Toast.makeText(binding.root.context, R.string.login_successful, Toast.LENGTH_SHORT).show()
+                            UserSession.login(user)
+                            MainActivity.setupMenu()
+                            findNavController().navigate(R.id.nav_home)
 
-                            // Connected
                         }
                         else{
                             Toast.makeText(binding.root.context, R.string.login_no_successful, Toast.LENGTH_SHORT).show()
@@ -186,3 +187,4 @@ class LoginFragment : Fragment() {
             })
     }
 }
+

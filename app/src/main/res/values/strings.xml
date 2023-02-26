@@ -23,7 +23,6 @@
     <string name="login_no_in_format">Username not good format</string>
     <string name="register_username_already_exists">This username already exists</string>
 
-
     <string name="text_button_7h_00">07:00</string>
     <string name="text_button_8h_00">08:00</string>
     <string name="text_button_9h_00">09:00</string>
@@ -40,5 +39,8 @@
     <string name="text_button_20h_00">20:00</string>
     <string name="text_button_21h_00">21:00</string>
     <string name="text_button_booking">Réserver</string>
+
+    <string name="application_name">Tennis Booking</string>
+    <string name="application_description">Tennis Booking est un application de réservations de terrain de Tennis.\n\nAttention, 2 heures maximum par jour et par membre.</string>
 
 </resources>
