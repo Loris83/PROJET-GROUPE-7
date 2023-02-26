@@ -7,8 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.example.projet.DatabaseHelper
 import com.example.projet.R
 import com.example.projet.databinding.FragmentLoginBinding
+import com.example.projet.reservation.ReservationFragment
+import com.google.firebase.database.*
+import java.util.*
 
 
 class LoginFragment : Fragment() {
@@ -21,7 +25,6 @@ class LoginFragment : Fragment() {
         super.onCreate(savedInstanceState)
         binding = FragmentLoginBinding.inflate(layoutInflater)
         loggingFunction()
-
         registerFunction()
     }
 
@@ -39,7 +42,6 @@ class LoginFragment : Fragment() {
             //Getting the inputs from their fields
             inputUserName = binding.editTextUserName.text.toString().trim()
             inputPassword = binding.editTextPassword.text.toString().trim()
-
             // Checking the validity of inputs
 
             if (checkIfNotEmpty(inputUserName, inputPassword))
@@ -48,7 +50,7 @@ class LoginFragment : Fragment() {
                 { Log.d("", "CHECK LENGTH PASSED"+inputPassword+" "+inputUserName)
                     if (checkFormatType(inputUserName, inputPassword))
                     { Log.d("", "CHECK FORMAT PASSED, YOU ARE GOOD TO GO"+inputPassword+" "+inputUserName)
-                        Toast.makeText(this.context, "you are good to go", Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(this.context, "you are good to go", Toast.LENGTH_SHORT).show()
                     }else {
                         Toast.makeText(this.context, R.string.login_no_in_format, Toast.LENGTH_SHORT).show()
                         //type format
@@ -60,13 +62,62 @@ class LoginFragment : Fragment() {
             {
                 Toast.makeText(this.context , R.string.login_empty, Toast.LENGTH_SHORT ).show()
             }
-
+            getUser(inputUserName,inputPassword)
         }
     }
 
-    private fun registerFunction (){
+    private fun registerFunction () {
         binding.buttonRegister.setOnClickListener {
-            //
+            //Getting the inputs from their fields
+            inputUserName = binding.editTextUserName.text.toString().trim()
+            inputPassword = binding.editTextPassword.text.toString().trim()
+            // Checking the validity of inputs
+
+            if (checkIfNotEmpty(inputUserName, inputPassword)) {
+                Log.d("", "CHECK IF EMPTY PASSED " + inputPassword + " " + inputUserName)
+                if (checkLength(inputUserName, inputPassword)) {
+                    Log.d("", "CHECK LENGTH PASSED" + inputPassword + " " + inputUserName)
+                    if (checkFormatType(inputUserName, inputPassword)) {
+                        Log.d(
+                            "",
+                            "CHECK FORMAT PASSED, YOU ARE GOOD TO GO" + inputPassword + " " + inputUserName
+                        )
+                    } else {
+                        Toast.makeText(
+                            this.context,
+                            R.string.login_no_in_format,
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        //type format
+                    }
+                } else {
+                    Toast.makeText(this.context, R.string.login_to_short, Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(this.context, R.string.login_empty, Toast.LENGTH_SHORT).show()
+            }
+
+            DatabaseHelper.database.getReference("user")
+                .orderByChild("username")
+                .equalTo(inputUserName).addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if(!snapshot.exists()) {
+                            val user = User(inputUserName, "", "", "user", inputPassword, false)
+                            DatabaseHelper.database.reference.child("user")
+                                .child(UUID.randomUUID().toString())
+                                .setValue(user)
+                        }
+                        else{
+                            Toast.makeText(binding.root.context, R.string.register_username_already_exists, Toast.LENGTH_SHORT).show()
+                        }
+
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.e("dataBase", error.toString())
+                    }
+
+                })
         }
     }
 
@@ -103,6 +154,47 @@ class LoginFragment : Fragment() {
     private fun dataBaseRequest (inputUserName: String, inputPassword: String){
         //
 
+    }
+
+    fun getUser(username: String, password: String) {
+        DatabaseHelper.database.getReference("user")
+            .orderByChild("username")
+            .equalTo(username)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    Log.d("dataBase", snapshot.toString())
+                    if(snapshot.exists()) {
+                        val user = snapshot.children.first().getValue(User::class.java)
+                        if(user?.password == password) {
+                            Log.d("dataBase","connected")
+                            Toast.makeText(binding.root.context, R.string.login_successful, Toast.LENGTH_SHORT).show()
+
+                            // Connected
+                        }
+                        else{
+                            Toast.makeText(binding.root.context, R.string.login_no_successful, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.e("dataBase", error.toString())
+                }
+
+            })
+    }
+
+    @IgnoreExtraProperties
+    data class User(val username: String? = null,
+                    val last_name: String? = null,
+                    val first_name: String? = null,
+                    val role: String? = null,
+                    val password: String? = null,
+                    val validated: Boolean? = null){
+                    //val uuid: String? = null) {
+        // Null default values create a no-argument default constructor, which is needed
+        // for deserialization from a DataSnapshot.
     }
 
 }

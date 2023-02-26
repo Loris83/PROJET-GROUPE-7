@@ -21,6 +21,8 @@
     <string name="login_empty">Username or password empty</string>
     <string name="login_to_short">Username or password to short</string>
     <string name="login_no_in_format">Username not good format</string>
+    <string name="register_username_already_exists">This username already exists</string>
+
 
     <string name="text_button_7h_00">07:00</string>
     <string name="text_button_8h_00">08:00</string>

@@ -58,38 +58,4 @@ class ReservationFragment : Fragment() {
                 })
     }
 
-    fun getUser(username: String, password: String) {
-        DatabaseHelper.database.getReference("user")
-            .orderByChild("username")
-            .equalTo(username)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    Log.d("dataBase", snapshot.toString())
-                    if(snapshot.exists()) {
-                        val user = snapshot.children.elementAt(1).getValue(User::class.java)
-                        if(user?.password == password) {
-                        Log.d("dataBase",""+user.toString())
-                            // Connected
-                        }
-                    }
-                }
-                override fun onCancelled(error: DatabaseError) {
-                    Log.e("dataBase", error.toString())
-                }
-
-            })
-    }
-
-    @IgnoreExtraProperties
-    data class User(val username: String? = null,
-                    val last_name: String? = null,
-                    val first_name: String? = null,
-                    val role: String? = null,
-                    val password: String? = null,
-                    val validated: Boolean? = null,
-                    val uuid: String? = null) {
-        // Null default values create a no-argument default constructor, which is needed
-        // for deserialization from a DataSnapshot.
-    }
-
 }
