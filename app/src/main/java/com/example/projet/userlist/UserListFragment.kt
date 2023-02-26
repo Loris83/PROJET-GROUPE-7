@@ -27,6 +27,7 @@ class UserListFragment : Fragment() {
         super.onCreate(savedInstanceState)
         binding = FragmentUserListBinding.inflate(layoutInflater)
         bindingBis = UserItemBinding.inflate(layoutInflater)
+        updateUserStatus()
         //var manager = LinearLayoutManager(binding.root.context)
 
         /*binding.recyclerView.apply {
@@ -42,7 +43,7 @@ class UserListFragment : Fragment() {
         UserModel.findVerifiedUsers(
             true,
         ) { users ->
-            binding.recyclerView.apply {
+            binding.secondRecyclerView.apply {
                 adapter = UserListAdapter(users)
                 layoutManager = LinearLayoutManager(binding.root.context)
             }
@@ -51,14 +52,11 @@ class UserListFragment : Fragment() {
         UserModel.findVerifiedUsers(
             false,
         ) { users ->
-            binding.secondRecyclerView.apply {
+            binding.recyclerView.apply {
                 adapter = UserListAdapter(users)
                 layoutManager = LinearLayoutManager(binding.root.context)
             }
         }
-
-        updateUserStatus()
-
     }
 
     override fun onCreateView(
@@ -139,15 +137,17 @@ class UserListFragment : Fragment() {
     }
 
     fun updateUserStatus(){
-        bindingBis.button2.setOnClickListener {
-
             DatabaseHelper.database.getReference("user")
                 .orderByChild("username")
                 .equalTo(bindingBis.username.text.toString())
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         if (snapshot.exists()) {
-                            DatabaseHelper.database.reference.child("user").child("verified").setValue(true)
+                            bindingBis.button2.setOnClickListener {
+                                DatabaseHelper.database.reference.child("user").child("verified")
+                                    .setValue(true)
+
+                            }
                         }
 
                     }
@@ -157,9 +157,6 @@ class UserListFragment : Fragment() {
                     }
 
                 })
-
-        }
-
     }
 
 
