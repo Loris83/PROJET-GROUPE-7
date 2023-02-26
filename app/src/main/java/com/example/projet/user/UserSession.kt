@@ -10,7 +10,10 @@ class UserSession {
         var admin : Boolean = false
 
         public fun login(user : UserDataModel){
-
+            userName = user.username
+            password = user.password
+            logged = true
+            admin = user.role.equals("admin")
         }
 
         public fun logout(){

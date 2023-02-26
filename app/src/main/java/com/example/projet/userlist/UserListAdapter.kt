@@ -15,9 +15,7 @@ class UserListAdapter(private val userList: List<UserDataModel>)
     : RecyclerView.Adapter<UserListAdapter.ViewHolder>() {
 
         class ViewHolder(binding : UserItemBinding) : RecyclerView.ViewHolder(binding.root){
-            val image: ShapeableImageView = binding.userImage
             val name : TextView = binding.username
-            val email : TextView = binding.email
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -33,9 +31,7 @@ class UserListAdapter(private val userList: List<UserDataModel>)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = userList[position]
-        holder.image.setImageResource(currentItem.image)
-        holder.name.text = currentItem.name
-        holder.email.text = currentItem.email
+        holder.name.text = currentItem.username
     }
 
 }

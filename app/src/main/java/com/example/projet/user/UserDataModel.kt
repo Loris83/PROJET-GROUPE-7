@@ -1,6 +1,9 @@
 package com.example.projet.user
 
-data class UserDataModel (  var image : Int,
-                            var name: String,
-                            var email:String,
-                            var verified : Boolean)
+import com.google.firebase.database.IgnoreExtraProperties
+
+@IgnoreExtraProperties
+data class UserDataModel (  var username:String = "",
+                            var role: String = "",
+                            var password: String = "",
+                            var verified : Boolean = false)

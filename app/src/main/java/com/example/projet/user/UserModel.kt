@@ -7,7 +7,7 @@ class UserModel {
 
         fun getUsers() : List<UserDataModel> {
             var users : MutableList<UserDataModel>  = mutableListOf<UserDataModel>()
-            users.add(
+            /*users.add(
                 UserDataModel(
                     R.drawable.a,
                     "Amber",
@@ -94,7 +94,7 @@ class UserModel {
                     "jennifer.brown@aol.com",
                     true
                 )
-            )
+            )*/
             return users
         }
 

@@ -48,7 +48,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_reservation,
                 R.id.nav_list_users,
                 R.id.nav_login,
-                R.id.nav_reserver
+                R.id.nav_reserver,
+                R.id.nav_logout
             ),  drawerLayout
         )
 
@@ -87,11 +88,13 @@ class MainActivity : AppCompatActivity() {
                     menu.findItem(R.id.nav_reservation).isVisible = true
                     menu.findItem(R.id.nav_reserver).isVisible = true
                     menu.findItem(R.id.nav_login).isVisible = false
+                    menu.findItem(R.id.nav_logout).isVisible = true
                 }else{
                     menu.findItem(R.id.nav_list_users).isVisible = false
                     menu.findItem(R.id.nav_reservation).isVisible = false
                     menu.findItem(R.id.nav_reserver).isVisible = false
                     menu.findItem(R.id.nav_login).isVisible = true
+                    menu.findItem(R.id.nav_logout).isVisible = false
                 }
 
             }

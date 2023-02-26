@@ -30,6 +30,12 @@
         tools:layout="@layout/fragment_login" />
 
     <fragment
+        android:id="@+id/nav_logout"
+        android:name="com.example.projet.login.LogoutFragment"
+        android:label="Logout"
+        tools:layout="@layout/fragment_logout" />
+
+    <fragment
         android:id="@+id/nav_reserver"
         android:name="com.example.projet.reserver.BookingFragment"
         android:label="Reserver"
