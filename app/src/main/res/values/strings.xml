@@ -39,4 +39,7 @@
     <string name="text_button_21h_00">21:00</string>
     <string name="text_button_booking">Réserver</string>
 
+    <string name="application_name">Tennis Booking</string>
+    <string name="application_description">Tennis Booking est un application de réservations de terrain de Tennis.\n\nAttention, 2 heures maximum par jour et par membre.</string>
+
 </resources>
