@@ -12,8 +12,6 @@ import com.example.projet.DatabaseHelper
 import com.example.projet.databinding.FragmentReservationBinding
 import com.google.firebase.database.*
 import kotlinx.coroutines.runBlocking
-
-
 class ReservationFragment : Fragment() {
     private lateinit var binding: FragmentReservationBinding
     private lateinit var manager: RecyclerView.LayoutManager
