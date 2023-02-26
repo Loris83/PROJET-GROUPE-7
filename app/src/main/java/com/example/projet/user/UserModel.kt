@@ -1,6 +1,15 @@
 package com.example.projet.user
 
+import android.util.Log
+import android.widget.Toast
+import androidx.navigation.fragment.findNavController
+import com.example.projet.DatabaseHelper
+import com.example.projet.MainActivity
 import com.example.projet.R
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import java.util.*
 
 class UserModel {
     companion object{
@@ -102,6 +111,35 @@ class UserModel {
             return getUsers().filter {
                 it.verified == verified
             }
+        }
+
+        fun findUser(username: String, password: String,action : (UserDataModel?) -> Unit, otherwise : () -> Unit) {
+            DatabaseHelper.database.getReference("user")
+                .orderByChild("username")
+                .equalTo(username)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        Log.d("dataBase", snapshot.toString())
+                        if (snapshot.exists()) {
+                            val user = snapshot.children.first().getValue(UserDataModel::class.java)
+                            action(user)
+                        } else {
+                            otherwise()
+                        }
+
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.e("dataBase", error.toString())
+                    }
+
+                })
+        }
+
+        fun addUser(user : UserDataModel){
+            DatabaseHelper.database.reference.child("user")
+                .child(UUID.randomUUID().toString())
+                .setValue(user)
         }
     }
 

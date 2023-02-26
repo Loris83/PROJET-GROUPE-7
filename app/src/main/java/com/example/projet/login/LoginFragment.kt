@@ -13,6 +13,7 @@ import com.example.projet.MainActivity
 import com.example.projet.R
 import com.example.projet.databinding.FragmentLoginBinding
 import com.example.projet.user.UserDataModel
+import com.example.projet.user.UserModel
 import com.example.projet.user.UserSession
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -67,7 +68,21 @@ class LoginFragment : Fragment() {
             {
                 Toast.makeText(this.context , R.string.login_empty, Toast.LENGTH_SHORT ).show()
             }
-            getUser(inputUserName,inputPassword)
+            //getUser(inputUserName,inputPassword)
+            UserModel.findUser(inputUserName, inputPassword,{
+                user ->
+                if(user?.password == inputPassword) {
+                    Log.d("dataBase","connected")
+                    Toast.makeText(binding.root.context, R.string.login_successful, Toast.LENGTH_SHORT).show()
+                    UserSession.login(user)
+                    MainActivity.setupMenu()
+                    findNavController().navigate(R.id.nav_home)
+
+                }
+                else{
+                    Toast.makeText(binding.root.context, R.string.login_no_successful, Toast.LENGTH_SHORT).show()
+                }
+            },{})
         }
     }
 
@@ -102,7 +117,7 @@ class LoginFragment : Fragment() {
                 Toast.makeText(this.context, R.string.login_empty, Toast.LENGTH_SHORT).show()
             }
 
-            DatabaseHelper.database.getReference("user")
+            /*DatabaseHelper.database.getReference("user")
                 .orderByChild("username")
                 .equalTo(inputUserName).addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
@@ -122,7 +137,12 @@ class LoginFragment : Fragment() {
                         Log.e("dataBase", error.toString())
                     }
 
-                })
+                })*/
+            UserModel.findUser(inputUserName,inputPassword,{
+                Toast.makeText(binding.root.context, R.string.register_username_already_exists, Toast.LENGTH_SHORT).show()
+            },{
+                UserModel.addUser(UserDataModel(inputUserName, "user", inputPassword,false))
+            })
         }
     }
 
@@ -157,6 +177,7 @@ class LoginFragment : Fragment() {
     }
 
     fun getUser(username: String, password: String) {
+        /*
         DatabaseHelper.database.getReference("user")
             .orderByChild("username")
             .equalTo(username)
@@ -184,7 +205,7 @@ class LoginFragment : Fragment() {
                     Log.e("dataBase", error.toString())
                 }
 
-            })
+            })*/
     }
 }
 
