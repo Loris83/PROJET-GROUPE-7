@@ -141,6 +141,38 @@ class UserModel {
                 .child(UUID.randomUUID().toString())
                 .setValue(user)
         }
+
+        fun findVerifiedUsers(verified: Boolean, action : (MutableList<UserDataModel>) -> Unit){
+            var users: MutableList<UserDataModel> = mutableListOf<UserDataModel>()
+            DatabaseHelper.database.getReference("user")
+                .orderByChild("verified")
+                .equalTo(verified)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            var index = 0
+                            Log.d("children", "" + snapshot.childrenCount)
+                            while (index < snapshot.childrenCount) {
+                                var user = snapshot.children.elementAt(index)
+                                    .getValue(UserDataModel::class.java)
+                                Log.d("children", "user : " + user)
+                                if (user != null) {
+                                    users.add(user)
+                                    Log.d("children", "users : " + users[index])
+                                }
+                                index++
+                            }
+                            action(users)
+                        }
+
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.e("dataBase", error.toString())
+                    }
+
+                })
+        }
     }
 
 

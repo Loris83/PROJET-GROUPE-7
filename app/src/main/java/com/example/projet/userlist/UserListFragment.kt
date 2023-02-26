@@ -25,7 +25,7 @@ class UserListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentUserListBinding.inflate(layoutInflater)
-        var manager = LinearLayoutManager(binding.root.context)
+        //var manager = LinearLayoutManager(binding.root.context)
 
         /*binding.recyclerView.apply {
             adapter = UserListAdapter(UserModel.getVerifiedUsers(true))
@@ -37,8 +37,23 @@ class UserListFragment : Fragment() {
             adapter = UserListAdapter(UserModel.getVerifiedUsers(false))
             layoutManager = manager
         }*/
-        getVerifiedUsers()
-        getUnverifiedUsers()
+        UserModel.findVerifiedUsers(
+            true,
+        ) { users ->
+            binding.recyclerView.apply {
+                adapter = UserListAdapter(users)
+                layoutManager = LinearLayoutManager(binding.root.context)
+            }
+        }
+
+        UserModel.findVerifiedUsers(
+            false,
+        ) { users ->
+            binding.secondRecyclerView.apply {
+                adapter = UserListAdapter(users)
+                layoutManager = LinearLayoutManager(binding.root.context)
+            }
+        }
 
     }
 
