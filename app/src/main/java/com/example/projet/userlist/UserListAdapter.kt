@@ -1,21 +1,27 @@
 package com.example.projet.userlist
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.projet.DatabaseHelper
 
 
 import com.example.projet.databinding.UserItemBinding
 import com.example.projet.user.UserDataModel
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
 class UserListAdapter(private val userList: List<UserDataModel>)
     : RecyclerView.Adapter<UserListAdapter.ViewHolder>() {
 
         class ViewHolder(binding : UserItemBinding) : RecyclerView.ViewHolder(binding.root){
-            val name : TextView = binding.username
+            val username : TextView = binding.username
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,7 +37,7 @@ class UserListAdapter(private val userList: List<UserDataModel>)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = userList[position]
-        holder.name.text = currentItem.username
+        holder.username.text = currentItem.username
     }
 
 }

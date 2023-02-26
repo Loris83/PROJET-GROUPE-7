@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.projet.DatabaseHelper
 import com.example.projet.R
 import com.example.projet.databinding.FragmentUserListBinding
+import com.example.projet.databinding.UserItemBinding
 import com.example.projet.reservation.RecyclerViewAdapter
 import com.example.projet.user.UserDataModel
 import com.example.projet.user.UserModel
@@ -21,10 +22,11 @@ import com.google.firebase.database.ValueEventListener
 
 class UserListFragment : Fragment() {
     private lateinit var binding: FragmentUserListBinding
-
+    private lateinit var bindingBis: UserItemBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentUserListBinding.inflate(layoutInflater)
+        bindingBis = UserItemBinding.inflate(layoutInflater)
         //var manager = LinearLayoutManager(binding.root.context)
 
         /*binding.recyclerView.apply {
@@ -54,6 +56,8 @@ class UserListFragment : Fragment() {
                 layoutManager = LinearLayoutManager(binding.root.context)
             }
         }
+
+        updateUserStatus()
 
     }
 
@@ -132,6 +136,30 @@ class UserListFragment : Fragment() {
                 }
 
             })
+    }
+
+    fun updateUserStatus(){
+        bindingBis.button2.setOnClickListener {
+
+            DatabaseHelper.database.getReference("user")
+                .orderByChild("username")
+                .equalTo(bindingBis.username.text.toString())
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            DatabaseHelper.database.reference.child("user").child("verified").setValue(true)
+                        }
+
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.e("dataBase", error.toString())
+                    }
+
+                })
+
+        }
+
     }
 
 

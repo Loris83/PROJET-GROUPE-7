@@ -52,14 +52,11 @@ class UserModel {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         if (snapshot.exists()) {
                             var index = 0
-                            Log.d("children", "" + snapshot.childrenCount)
                             while (index < snapshot.childrenCount) {
                                 var user = snapshot.children.elementAt(index)
                                     .getValue(UserDataModel::class.java)
-                                Log.d("children", "user : " + user)
                                 if (user != null) {
                                     users.add(user)
-                                    Log.d("children", "users : " + users[index])
                                 }
                                 index++
                             }
