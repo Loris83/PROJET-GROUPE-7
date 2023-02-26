@@ -11,6 +11,7 @@ import com.example.projet.DatabaseHelper
 import com.example.projet.R
 import com.example.projet.databinding.FragmentLoginBinding
 import com.example.projet.reservation.ReservationFragment
+import com.example.projet.user.UserDataModel
 import com.google.firebase.database.*
 import java.util.*
 
@@ -102,7 +103,7 @@ class LoginFragment : Fragment() {
                 .equalTo(inputUserName).addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         if(!snapshot.exists()) {
-                            val user = User(inputUserName, "", "", "user", inputPassword, false)
+                            val user = UserDataModel(inputUserName, "user", inputPassword,false)
                             DatabaseHelper.database.reference.child("user")
                                 .child(UUID.randomUUID().toString())
                                 .setValue(user)
@@ -164,7 +165,7 @@ class LoginFragment : Fragment() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     Log.d("dataBase", snapshot.toString())
                     if(snapshot.exists()) {
-                        val user = snapshot.children.first().getValue(User::class.java)
+                        val user = snapshot.children.first().getValue(UserDataModel::class.java)
                         if(user?.password == password) {
                             Log.d("dataBase","connected")
                             Toast.makeText(binding.root.context, R.string.login_successful, Toast.LENGTH_SHORT).show()
@@ -184,17 +185,4 @@ class LoginFragment : Fragment() {
 
             })
     }
-
-    @IgnoreExtraProperties
-    data class User(val username: String? = null,
-                    val last_name: String? = null,
-                    val first_name: String? = null,
-                    val role: String? = null,
-                    val password: String? = null,
-                    val validated: Boolean? = null){
-                    //val uuid: String? = null) {
-        // Null default values create a no-argument default constructor, which is needed
-        // for deserialization from a DataSnapshot.
-    }
-
 }
