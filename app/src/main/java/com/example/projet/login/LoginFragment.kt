@@ -1,11 +1,13 @@
 package com.example.projet.login
 
 import android.os.Bundle
+import android.text.Editable
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.projet.DatabaseHelper
@@ -30,6 +32,7 @@ class LoginFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = FragmentLoginBinding.inflate(layoutInflater)
+
         loggingFunction()
         registerFunction()
     }
@@ -141,7 +144,7 @@ class LoginFragment : Fragment() {
             UserModel.findUser(inputUserName,inputPassword,{
                 Toast.makeText(binding.root.context, R.string.register_username_already_exists, Toast.LENGTH_SHORT).show()
             },{
-                UserModel.addUser(UserDataModel(inputUserName, "user", inputPassword,false))
+                UserModel.addUser(UserDataModel(UUID.randomUUID().toString(), inputUserName, "user", inputPassword,false))
             })
         }
     }

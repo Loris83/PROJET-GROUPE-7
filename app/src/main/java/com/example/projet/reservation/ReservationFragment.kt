@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projet.DatabaseHelper
 import com.example.projet.databinding.FragmentReservationBinding
+import com.example.projet.user.UserSession
 import com.google.firebase.database.*
 import kotlinx.coroutines.runBlocking
 
@@ -22,7 +23,8 @@ class ReservationFragment : Fragment() {
         super.onCreate(savedInstanceState)
         binding = FragmentReservationBinding.inflate(layoutInflater)
         //getUser("michelG83","azerty1234")
-        getReservation()
+        //getReservation()
+        update()
 
     }
 
@@ -34,62 +36,19 @@ class ReservationFragment : Fragment() {
         //return inflater.inflate(R.layout.fragment_reservation, container, false)
     }
 
-     fun getReservation()  {
-            DatabaseHelper.database.getReference("reservation")
-                .orderByChild("date")
-                .addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        if (snapshot.exists()) {
-                            val reservation = snapshot.children.map {
-                                it.getValue(ReservationDataModel::class.java)
-                            }
-                            data = reservation as List<ReservationDataModel>
-                            manager = LinearLayoutManager(binding.root.context)
-                            binding.recyclerView.apply {
-                                adapter = RecyclerViewAdapter(data)
-                                layoutManager = manager
-                            }
-                        }
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-                        Log.e("dataBase", error.toString())
-                    }
+    private fun update(){
+        ReservationModel.findReservation {
+                data ->
+            manager = LinearLayoutManager(binding.root.context)
+            binding.recyclerView.apply {
+                adapter = RecyclerViewAdapter(data.filter {
+                    UserSession.admin || UserSession.user.username.equals(it.user_id)
                 })
+                layoutManager = manager
+            }
+        }
     }
 
-    fun getUser(username: String, password: String) {
-        DatabaseHelper.database.getReference("user")
-            .orderByChild("username")
-            .equalTo(username)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    Log.d("dataBase", snapshot.toString())
-                    if(snapshot.exists()) {
-                        val user = snapshot.children.elementAt(1).getValue(User::class.java)
-                        if(user?.password == password) {
-                        Log.d("dataBase",""+user.toString())
-                            // Connected
-                        }
-                    }
-                }
-                override fun onCancelled(error: DatabaseError) {
-                    Log.e("dataBase", error.toString())
-                }
 
-            })
-    }
-
-    @IgnoreExtraProperties
-    data class User(val username: String? = null,
-                    val last_name: String? = null,
-                    val first_name: String? = null,
-                    val role: String? = null,
-                    val password: String? = null,
-                    val validated: Boolean? = null,
-                    val uuid: String? = null) {
-        // Null default values create a no-argument default constructor, which is needed
-        // for deserialization from a DataSnapshot.
-    }
 
 }

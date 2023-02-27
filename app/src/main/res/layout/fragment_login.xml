@@ -44,7 +44,6 @@
                     android:layout_height="50dp"
                     android:ems="10"
                     android:inputType="textPersonName"
-                    android:text="@string/login_pseudo"
                     android:textColor="@color/black" />
 
                 <EditText
@@ -53,7 +52,6 @@
                     android:layout_height="50dp"
                     android:ems="10"
                     android:inputType="textPassword"
-                    android:text="@string/login_password"
                     android:textColor="@color/black" />
 
                 <Button

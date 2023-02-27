@@ -5,13 +5,12 @@ import android.service.autofill.UserData
 class UserSession {
     companion object{
         var logged : Boolean = false
-        lateinit var userName : String
-        lateinit var password : String
+        lateinit var user: UserDataModel
         var admin : Boolean = false
 
-        public fun login(user : UserDataModel){
-            userName = user.username
-            password = user.password
+
+        public fun login(userDataModel : UserDataModel){
+            user = userDataModel
             logged = true
             admin = user.role.equals("admin")
         }
@@ -20,5 +19,7 @@ class UserSession {
             logged = false
             admin = false
         }
+
+
     }
 }

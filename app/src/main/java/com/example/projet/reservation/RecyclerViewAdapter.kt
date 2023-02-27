@@ -10,6 +10,7 @@ class RecyclerViewAdapter(private val data : List<ReservationDataModel>)
 
     class ViewHolder(private val binding : ReservationRecyclerViewItemBinding)
         : RecyclerView.ViewHolder(binding.root) {
+        val buttondelete = binding.button
             fun bind(item: ReservationDataModel){
                 binding.listItem = item
             }
@@ -24,6 +25,10 @@ class RecyclerViewAdapter(private val data : List<ReservationDataModel>)
 
     override fun onBindViewHolder(holder: RecyclerViewAdapter.ViewHolder, position: Int) {
         holder.bind(data[position])
+        holder.buttondelete.setOnClickListener {
+            ReservationModel.deleteReservation(data[position])
+            //data.removeAt(position)
+        }
     }
 
     override fun getItemCount(): Int {

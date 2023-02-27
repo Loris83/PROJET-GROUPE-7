@@ -4,11 +4,12 @@ import com.google.firebase.database.IgnoreExtraProperties
 
 @IgnoreExtraProperties
 data class ReservationDataModel(
-        val opening: String? = null,
-        val ending: String? = null,
-        val date: String? = null,
-        val field_id: String? = null,
-        val user_id: String? = null
+        val id : String = "",
+        val opening: String = "",
+        val ending: String = "",
+        val date: String = "",
+        val field_id: String = "",
+        val user_id: String = ""
 ){
 
 }
