@@ -85,8 +85,8 @@ class MainActivity : AppCompatActivity() {
             navView?.apply {
                 if (UserSession.logged){
                     menu.findItem(R.id.nav_list_users).isVisible = UserSession.admin
-                    menu.findItem(R.id.nav_reservation).isVisible = true
-                    menu.findItem(R.id.nav_reserver).isVisible = true
+                    menu.findItem(R.id.nav_reservation).isVisible = UserSession.user.verified
+                    menu.findItem(R.id.nav_reserver).isVisible = UserSession.user.verified
                     menu.findItem(R.id.nav_login).isVisible = false
                     menu.findItem(R.id.nav_logout).isVisible = true
                 }else{

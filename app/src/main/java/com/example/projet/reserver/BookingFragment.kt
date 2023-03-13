@@ -1,19 +1,19 @@
 package com.example.projet.reserver
 
 import android.os.Bundle
-import android.se.omapi.Session
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.CalendarView
-import com.example.projet.R
+import androidx.fragment.app.Fragment
 import com.example.projet.databinding.FragmentBookingBinding
 import com.example.projet.reservation.ReservationDataModel
 import com.example.projet.reservation.ReservationModel
 import com.example.projet.user.UserSession
+import java.time.DayOfWeek
+import java.time.LocalDate
+import java.time.format.TextStyle
 import java.util.*
 
 
@@ -80,15 +80,25 @@ class BookingFragment : Fragment() {
         }
 
         binding.calendarView.setOnDateChangeListener(object : CalendarView.OnDateChangeListener{
+
             override fun onSelectedDayChange(p0: CalendarView, year: Int, month: Int, day: Int) {
                 currentDate = getFormatedDate(day,month,year)
                 ReservationModel.findReservation {
+                    var cnt = 0
                     buttons.forEach {
                         it.first.isEnabled = true
+                        ++cnt
+                    }
+                    if(cnt >= 2){
+                        buttons.forEach {
+                            it.first.isEnabled = false
+                        }
                     }
                     it.filter { it.date.equals(currentDate) }.forEach{
                         res->
                         buttons.first { it.second.equals(res.opening) }.first.isEnabled = false
+
+
                     }
 
                 }
@@ -100,6 +110,7 @@ class BookingFragment : Fragment() {
 
 
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
